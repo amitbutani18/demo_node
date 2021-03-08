@@ -18,8 +18,10 @@ router.post('/',async (req,res)=>{
 
     let validPass = await bcrypt.compare( req.body.password , user.password);
     if(!validPass)  return res.status(400).send('Invalid email or password.');
+    
+    var token = user.generateAuthToken();
 
-    const token = jwt.sign({ _id : user._id} , config.get('jwtPrivateKey'));
+    /// const token = jwt.sign({ _id : user._id} , config.get('jwtPrivateKey'));
     res.send(token);
 });
 
@@ -28,7 +30,7 @@ function validate(req) {
         email : Joi.string().required().email(),
         password : Joi.string().min(6).max(14).required()
     });
-    return schema.validate(req);
+    return schema.validate(req); 
 }
 
 

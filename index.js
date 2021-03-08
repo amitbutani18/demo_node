@@ -10,10 +10,12 @@ const auth = require('./routes/auth');
 
 const app = express();
  
-if(!process.env.jwtPrivateKey) {
-    console.log('Something went wrong...........');
+if(!config.get('jwtPrivateKey')) {
+    console.error('Something went wrong...........');
     process.exit(1);
 }
+
+console.log(config.get('jwtPrivateKey'));
  
 mongoose.connect('mongodb://localhost/playground',{ useNewUrlParser: true , useUnifiedTopology: true })
     .then(()=>console.log('DB connected successfully......'))
