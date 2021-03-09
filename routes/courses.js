@@ -1,5 +1,7 @@
 const { Course , validate} = require('../models/course');
 const { Author } = require('../models/author');
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -13,7 +15,7 @@ router.get('/',async (req,res)=>{
 });
 
 
-router.post('/addCourses',async (req,res)=>{
+router.post('/addCourses',auth,async (req,res)=>{
     // const { error } = validate(req.body);
     // if(error) return res.status(400).send(error.details[0].message);
 
@@ -29,5 +31,12 @@ router.post('/addCourses',async (req,res)=>{
     res.send(course);
 });
 
+router.delete('/:id',[ auth , admin ],async (req,res)=>{
+    
+    const course = await Course.findByIdAndRemove(req.params.id);
+    if (!course) return res.status(400).send("Invalid course.");
+
+    res.send(course);
+});
 
 module.exports = router;
