@@ -7,6 +7,7 @@ const authors = require('./routes/authors');
 const courses = require('./routes/courses');
 const user = require('./routes/users');
 const auth = require('./routes/auth');
+const error = require('./middleware/error');
 
 const app = express();
  
@@ -28,6 +29,8 @@ app.use('/api/authors',authors);
 app.use('/api/course',courses);
 app.use('/api/users',user);
 app.use('/api/auth',auth);
+
+app.use(error);
 
 const port = process.env.PORT || 3030;
 app.listen(port, ()=>console.log(`Listening on port ${port}`));
